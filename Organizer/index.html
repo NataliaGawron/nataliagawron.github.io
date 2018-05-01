@@ -8,8 +8,8 @@
     <link rel="Shortcut icon" href="img/ico/favicon.ico" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-    <body class="container d-inline">
+</head>
+    <body class="container">
         <main>
             <div class="container row">
                 <div class="panel-info form-box">
@@ -25,7 +25,10 @@
                                 <div class="cont_titulo_cont">
                                     <h3>Zadania do zrobienia</h3>
                                 </div>
-                                <div class="cont_add_titulo_cont"><a href="#e" onclick="add_new()"><i class="material-icons">+</i></a>
+                                <div class="cont_add_titulo_cont">
+                                    <a href="#e" onclick="add_new()">
+                                        <i class="material-icons">+</i>
+                                    </a>
                                 </div>
                             </div>
 
@@ -47,7 +50,11 @@
                                             </div>
                                             <div class="cont_btns_options">
                                                 <ul>
-                                                    <li><a href="#" onclick="finish_action('0','0_1');"><i class="material-icons">&#x2714;</i></a></li>
+                                                    <li>
+                                                        <a href="#" onclick="finish_action('0','0_1');">
+                                                            <i class="material-icons">&#x2714;</i>
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -66,8 +73,10 @@
                                     <tr>
                                         <td>
                                             <select name="" id="action_select">
-                                            <option value="SHOPPING">SHOPPING</option>
-                                            <option value="WORK">WORK</option> <option value="SPORT">SPORT</option> <option value="MUSIC">MUSIC</option> 
+                                                <option value="SHOPPING">SHOPPING</option>
+                                                <option value="WORK">WORK</option>
+                                                <option value="SPORT">SPORT</option>
+                                                <option value="MUSIC">MUSIC</option>
                                             </select>
                                             <!-- End td 1 -->
                                         </td>
@@ -77,8 +86,8 @@
                                         </td>
                                         <td>
                                             <select name="" class="input_description_title" id="date_select">
-                                            <option value="TODAY">TODAY</option>
-                                            <option value="TOMORROW">TOMORROW</option>       
+                                                <option value="TODAY">TODAY</option>
+                                                <option value="TOMORROW">TOMORROW</option>
                                             </select>
                                             <!-- End td 3 -->
                                         </td>
@@ -126,4 +135,4 @@
 
 
 
-    </html
+    </html>
