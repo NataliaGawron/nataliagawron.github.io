@@ -19,7 +19,7 @@ var svg = d3
     .append('g')
     .attr('transform', 'translate(' + radius + ',' + height / 2 + ')');
 
-//Clip path needed for cicrular SVG avatars
+// Wymagana ścieżka klipu dla okrągłych awatarów svg
 var defs = svg.append('defs');
 var clipPath = defs
     .append('clipPath')
@@ -55,21 +55,21 @@ function treeify(list, callback) {
 
     var treeData = [];
     list.forEach(function(node) {
-        //Assuming the highest node is the last in the csv file
+        // Zakładając, że najwyższy węzeł jest ostatnim w pliku csv
         if (node.Manager === node.Associate) {
             node.Manager = 'Board of Directors';
             callback(node);
         }
-        // add to parent
+        // dodaj do nadrzędnego
         var parent = dataMap[node.Manager];
 
         if (parent) {
-            // create child array if it doesn't exist
+            // utwórz tablicę, jeśli nie istnieje
             (parent.children || (parent.children = []))
-            // add node to child array
+            // dodaj węzeł do tablicy 
             .push(node);
         } else {
-            // parent is null or missing
+            // rodzic ma wartość null lub brakuje go
             treeData.push(node);
         }
     });
@@ -84,13 +84,13 @@ function findItem(root, name, callback) {
             callback(element);
             return;
         }
-        //The up, uncompressed case
+        //górny (skompresowany) case
         else if (element.children !== undefined && element.children.length > 0) {
             for (var i = 0; i < element.children.length; i++) {
                 stack.push(element.children[i]);
             }
         }
-        //The down (compressed) case
+        // dolny (skompresowany) case
         else if (element._children !== undefined && element._children.length > 0) {
             for (var j = 0; j < element._children.length; j++) {
                 stack.push(element._children[j]);
@@ -101,7 +101,7 @@ function findItem(root, name, callback) {
 
 function defaultPlot(root, elem) {
     findItem(root, elem, function(d) {
-        //Showing 1 up and below
+        // Pokazuje 1 w górę i poniżej
         findItem(root, d.Manager, function(x) {
             x.children ? x.children.forEach(collapse) : (x.children = x._children);
             drawIt(x, root);
@@ -117,15 +117,17 @@ function collapse(d) {
     }
 }
 
-//For the buggy transition interruption with many nodes
+// Dla błędnego przejścia z wieloma węzłami
 function showAllCurrentPathsAndNodes() {
     d3.selectAll('.link').style('opacity', 1);
     d3.selectAll('.node').style('opacity', 1);
 }
 
-// Toggle children on click.
+
+28 / 5000
+    // Przełącz dzieci na kliknięciem
 function clickedNode(d, root) {
-    //Accounting for the transition bug on the delay
+    // zanotowanie błędu przejścia na opóźnienie
     showAllCurrentPathsAndNodes();
 
     if (d.children) {
@@ -146,7 +148,7 @@ function drawIt(root) {
         return d.depth;
     });
     var link = svg.selectAll('path.link').data(cluster.links(nodes));
-    //This nodes callback is SUPER important for the update pattern
+    //ważne wywołanie dla wzorca aktualizacji
     var node = svg.selectAll('g.node').data(nodes, function(d) {
         return d.Associate;
     });
@@ -172,7 +174,7 @@ function drawIt(root) {
         .transition()
         .duration(300)
         .delay(function(d, i) {
-            return 28 * i;
+            return 25 * i;
         })
         .style('opacity', 1);
 
@@ -198,7 +200,7 @@ function drawIt(root) {
             d3.select(this).moveToFront();
         });
 
-    //Cant trust the enter append here, reassign the event listener for all nodes each draw
+    //ponowne przypisanie detektora zdarzeń dla wszystkich węzłów przy każdym losowaniu
     d3.selectAll('.node').on('click', function(d) {
         return (d._children || d.children) && d.Manager !== 'Board of Directors' ? clickedNode(d, root) : '';
     });
@@ -207,7 +209,7 @@ function drawIt(root) {
         .transition()
         .duration(300)
         .delay(function(d, i) {
-            return 28 * i;
+            return 65 * i;
         })
         .style('opacity', 1);
 
@@ -216,43 +218,42 @@ function drawIt(root) {
         .attr('r', avatarRadius)
         .attr('class', 'circle-marker')
         .style('stroke', function(d) {
-            return (d._children || d.children) && d.Manager !== 'Board of Directors' ? 'black' : 'rosa';
+            return (d._children || d.children) && d.Manager !== 'Board of Directors' ? 'fffa00' : 'white'; //kolory borderów avatarów
         })
         .style('fill', function(d) {
-            return (d._children || d.children) && d.Manager !== 'Board of Directors' ? '#FFACFF' : '#0060FF';
+            return (d._children || d.children) && d.Manager !== 'Board of Directors' ? 'ff5a00' : 'ff5a00';
         });
 
     g
         .append('svg:image')
         .attr('class', 'node-avatar')
-        .attr('xlink:href', 'https://cdn1.iconfinder.com/data/icons/unique-round-blue/93/user-512.png')
+        .attr('xlink:href', 'user.png')
         .attr('height', avatarRadius * 2)
         .attr('width', avatarRadius * 2)
         .attr('x', '-' + avatarRadius)
         .attr('y', '-' + avatarRadius)
         .attr('clip-path', 'url(#clip-circle)');
 
-    //Might want to tween this?
     d3.selectAll('.node-avatar').attr('transform', function(d) {
-        return 'rotate(' + -1 * (d.x - 90) + ')';
+        return 'rotate(' + -1 * (d.x - 90) + ')'; //rotacja avatara, by był w pionie
     });
 
     g
         .append('text')
-        .attr('dy', '.31em')
+        .attr('dy', '.331em')
         .attr('class', 'label-text')
         .text(function(d) {
             return d.Associate;
         });
 
-    //search all labels to ensure they are right side up (cant rely on the enter append here)
+    // przeszukuj wszystkie etykiety, aby upewnić się, że są one prawą stroną do góry
     d3
         .selectAll('.label-text')
         .attr('text-anchor', function(d) {
             return d.x < 180 ? 'start' : 'end';
         })
         .attr('transform', function(d) {
-            return d.x < 180 ? 'translate(' + translateOffset + ')' : 'rotate(180)translate(-' + translateOffset + ')';
+            return d.x < 180 ? 'translate(' + translateOffset + ')' : 'rotate(270)translate(-' + translateOffset + ')'; //translacja napisu label-text
         });
 
     link
