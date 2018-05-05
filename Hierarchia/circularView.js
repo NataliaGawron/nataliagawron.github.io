@@ -4,7 +4,7 @@ queue()
 
 var height = document.getElementById('tree-container').offsetHeight;
 var width = document.getElementById('tree-container').offsetWidth;
-var avatarRadius = 20;
+var avatarRadius = 15;
 var translateOffset = 25;
 var radius = d3.min([height, width]) / 2;
 var cluster = d3.layout.cluster().size([360, radius / 1.33]);
@@ -253,7 +253,8 @@ function drawIt(root) {
             return d.x < 180 ? 'start' : 'end';
         })
         .attr('transform', function(d) {
-            return d.x < 180 ? 'translate(' + translateOffset + ')' : 'rotate(270)translate(-' + translateOffset + ')'; //translacja napisu label-text
+            //return d.x < 180 ? 'translate(' + translateOffset + ')' : 'rotate(270)translate(-' + translateOffset + ')'; //translacja napisu label-text
+             return d.x < 180 ? 'rotate(' + -1 * (d.x - 95) + ')translate(' + translateOffset + ')' : 'rotate(' + -1 * (d.x - 95) + ')translate(-' + translateOffset + ')';
         });
 
     link
