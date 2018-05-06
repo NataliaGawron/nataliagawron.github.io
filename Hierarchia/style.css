@@ -11,9 +11,11 @@ body {
 }
 
 #tree-container {
+    align-content: center;
     position: relative;
     display: block;
-    margin-left: 100px;
+    margin-left: auto;
+    margin-right: auto;
     height: 100%;
     width: 100%;
 }
